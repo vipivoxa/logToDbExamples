@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    	<encoder>
+      		<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    	</encoder>
+	</appender>
+  	<!--  msg goes to tables: logging_event, logging_event_property,logging_event_exception have to be created prior to running -->
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>oracle.jdbc.driver.OracleDriver</driverClass>
+            <url>jdbc:oracle:thin:@//db_host:db_port/db_service_name</url>
+            <user>db_usr</user>
+            <password>db_pwd</password> 
+        </connectionSource>
+    </appender>
+
+	<logger name="com.dummy" level="DEBUG">
+		<appender-ref ref="DB" />		
+	</logger>
+	
+	<root level="error">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <!--
+	   CREATE TABLE msg_log(
+       user_id         VARCHAR2(255)
+     ,obj             VARCHAR2(2000)
+     ,msg             VARCHAR2(2000)
+     ,msg_type        VARCHAR2(10)
+     ,msg_level       VARCHAR2(10)
+     ,msg_thread      VARCHAR2(255)
+     ,log_date        VARCHAR2(255)
+     ,creation_date   DATE DEFAULT SYSDATE
+   );
+	-->
+    <Appenders>
+    <JDBC  name="databaseAppender" tableName="msg_log">
+      <ConnectionFactory class="com.dummy.DummyJava3ConnFak" method="getDatabaseConnection" />
+      <Column name="obj" pattern="%logger" />
+      <Column name="msg" pattern="%msg" />
+      <Column name="msg_level" pattern="%-5level" />
+      <Column name="msg_thread" pattern="%t" /> 
+      <Column name="log_date" pattern="%d{DEFAULT}" />     
+      <!-- <Column name="exception" pattern="%ex{full}" /> -->
+    </JDBC>
+  	</Appenders>    
+    
+    <Loggers>
+     <Logger name="com.dummy" level="DEBUG"/>
+     	<Root level="debug">
+     		<AppenderRef ref="databaseAppender"/>
+     	</Root>       
+    </Loggers>
+</Configuration>
+

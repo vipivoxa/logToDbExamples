@@ -1,0 +1,36 @@
+    **log4j.properties file**
+	
+    # Define the root logger with appender file
+    log4j.rootLogger = DEBUG, DB
+
+    # DB appender
+    log4j.appender.DB=org.apache.log4j.jdbc.JDBCAppender
+
+    # DB
+    log4j.appender.DB.URL=jdbc:oracle:thin:@//db_host:db_port/db_service_name
+    log4j.appender.DB.driver=oracle.jdbc.driver.OracleDriver
+    log4j.appender.DB.user=db_usr
+    log4j.appender.DB.password=db_pwd
+
+	# Set the SQL statement to be executed.
+	#CREATE TABLE msg_log(
+	#      user_id         VARCHAR2(255)
+	#     ,obj             VARCHAR2(2000)
+	#     ,msg             VARCHAR2(2000)
+	#     ,msg_type        VARCHAR2(10)
+	#     ,msg_level       VARCHAR2(10)
+	#     ,msg_thread      VARCHAR2(255)
+	#     ,log_date        VARCHAR2(255)
+	#     ,creation_date   DATE DEFAULT SYSDATE
+	#   );
+    
+    
+    log4j.appender.DB.sql=INSERT INTO msg_log(user_id, obj, msg, msg_thread, msg_level, log_date) values('%X{userId}','%c','%m','%t', '%p', '%d{ABSOLUTE}')
+
+    # Define the layout for file appender
+    log4j.appender.DB.layout=org.apache.log4j.PatternLayout
+    
+    logger.rolling.name = com.dummy
+	logger.rolling.level = debug
+	logger.rolling.additivity = false
+	logger.rolling.appenderRef.rolling.ref = RollingFile
